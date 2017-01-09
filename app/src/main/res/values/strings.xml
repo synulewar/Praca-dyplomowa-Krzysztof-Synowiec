@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Przewodnik Turystyczny</string>
     <string name="action_settings">Settings</string>
+    <string name="nazwa"><b>Nazwa</b></string>
+    <string name="opis">Opis</string>
+    <string name="adres">Adres</string>
 </resources>
