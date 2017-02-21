@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.grupa2.przewodnikturystyczny.MainList">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/order_name_asc"
+        android:title="Sortuj po Nazwie rosnąco"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/order_name_dsc"
+        android:title="Sortuj po Nazwie malejąco"
+        app:showAsAction="never"/>
+</menu>
