@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.grupa2.przewodnikturystyczny">
-
+    
 
     <application
         android:allowBackup="true"
@@ -20,7 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailView"></activity>
-        <activity android:name=".AttractionInfo"></activity>
     </application>
 
 </manifest>
