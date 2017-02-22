@@ -6,6 +6,7 @@
 
 
     <ImageView
+        android:id="@+id/main_photo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="10dp" />
@@ -32,6 +33,7 @@
                 style="@style/detailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
@@ -45,17 +47,25 @@
                 style="@style/headText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/opis"
+                android:text="@string/adres"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/opis"
+                android:id="@+id/place"
                 style="@style/detailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/opis"
+            style="@style/detailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </LinearLayout>
 

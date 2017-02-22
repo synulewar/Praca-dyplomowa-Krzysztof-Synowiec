@@ -1,9 +1,12 @@
 package com.grupa2.przewodnikturystyczny;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by KPC on 2017-02-02.
  */
-public class Attraction {
+public class Attraction implements Parcelable {
     private String mName;
     private String mAdress;
     private String mShortDesctription;
@@ -74,7 +77,46 @@ public class Attraction {
         this.mPhoto3 = mPhoto3;
     }
 
-    public void setmShortDesctription(String mShortDesctription) {
+    public void setShortDesctription(String mShortDesctription) {
         this.mShortDesctription = mShortDesctription;
     }
+
+    protected Attraction(Parcel in) {
+        mName = in.readString();
+        mAdress = in.readString();
+        mShortDesctription = in.readString();
+        mFullDescription = in.readString();
+        mPhoto1 = in.readString();
+        mPhoto2 = in.readString();
+        mPhoto3 = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mName);
+        dest.writeString(mAdress);
+        dest.writeString(mShortDesctription);
+        dest.writeString(mFullDescription);
+        dest.writeString(mPhoto1);
+        dest.writeString(mPhoto2);
+        dest.writeString(mPhoto3);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Attraction> CREATOR = new Parcelable.Creator<Attraction>() {
+        @Override
+        public Attraction createFromParcel(Parcel in) {
+            return new Attraction(in);
+        }
+
+        @Override
+        public Attraction[] newArray(int size) {
+            return new Attraction[size];
+        }
+    };
 }

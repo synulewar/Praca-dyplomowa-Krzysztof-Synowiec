@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -35,6 +36,7 @@
             android:layout_height="wrap_content"
             style="@style/headText"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="center"
             android:text="@string/adres"
             android:id="@+id/textView3" />
 
@@ -42,7 +44,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/detailText"
+            android:layout_gravity="center"
             android:id="@+id/adres" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:srcCompat="@drawable/ic_place_black_24dp"
+            android:id="@+id/localizeButton"
+            android:layout_gravity="center"/>
+
     </LinearLayout>
 
 
@@ -51,15 +63,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/headText"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/opis"
-            android:id="@+id/textView4" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,33 +71,33 @@
 
     </LinearLayout>
 
-
-
 </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/horizontalScrollView"
+        android:layout_gravity="center_horizontal">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/photo1" />
+            android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/photo2" />
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="300dp"
+                android:id="@+id/photo1" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/photo3" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="300dp"
+                android:id="@+id/photo2" />
 
-
-
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="300dp"
+                android:id="@+id/photo3" />
+        </LinearLayout>
+        </HorizontalScrollView>>
 
 </LinearLayout>

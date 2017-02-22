@@ -15,11 +15,15 @@ public class AttractionDatabase {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + AttrConst.TABLE_NAME;
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + AttrConst.TABLE_NAME + " (" +
-                    AttrConst._ID + " INTEGER PRIMARY KEY," +
-                    AttrConst.COLUMN_ATTRACTION_NAME + " TEXT," +
-                    AttrConst.COLUMN_ADRES + " TEXT," +
-                    AttrConst.COLUMN_SHORT_DESCRIPTION + " TEXT)";
+            "CREATE TABLE " + AttrConst.TABLE_NAME + " ("
+                    + AttrConst._ID + " INTEGER PRIMARY KEY,"
+                    + AttrConst.COLUMN_ATTRACTION_NAME + " TEXT,"
+                    + AttrConst.COLUMN_ADRES + " TEXT,"
+                    + AttrConst.COLUMN_SHORT_DESCRIPTION + " TEXT,"
+                    + AttrConst.COLUMN_FULL_DESCRIPTION + " TEXT,"
+                    + AttrConst.COLUMN_PHOTO_1 + " TEXT,"
+                    + AttrConst.COLUMN_PHOTO_2 + " TEXT,"
+                    + AttrConst.COLUMN_PHOTO_3 + " TEXT )";
 
     private static final String TAG = "AttractionDatabase";
     private DatabaseHelper mDbHelper;
@@ -30,12 +34,13 @@ public class AttractionDatabase {
     public static class AttrConst implements BaseColumns {
         public static final String TABLE_NAME = "attractions";
         public static final String COLUMN_ATTRACTION_NAME = "name";
-        public static final String COLUMN_ADRES = "adress";
+        public static final String COLUMN_ADRES = "adres";
         public static final String COLUMN_SHORT_DESCRIPTION = "shortDescription";
         public static final String COLUMN_FULL_DESCRIPTION = "fullDescription";
         public static final String COLUMN_PHOTO_1 = "photo1";
         public static final String COLUMN_PHOTO_2 = "photo2";
         public static final String COLUMN_PHOTO_3 = "photo3";
+        public static final String KEY = "key";
     }
 
     public class DatabaseHelper extends SQLiteOpenHelper {
@@ -94,13 +99,33 @@ public class AttractionDatabase {
     }
 
     public Cursor fetchAllAttractions() {
-        Cursor mCursor = mDatabase.query(AttrConst.TABLE_NAME, new String[]{AttrConst._ID, AttrConst.COLUMN_ATTRACTION_NAME,
-                AttrConst.COLUMN_SHORT_DESCRIPTION, AttrConst.COLUMN_PHOTO_1}, null, null, null, null, orderBy, null);
+        Cursor mCursor = mDatabase.query(AttrConst.TABLE_NAME, null, null, null, null, null, orderBy, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
 
         return mCursor;
+    }
+
+    public void addAttractions() {
+        insertAttraction(new Attraction("Hydropolis", "ul. Na Grobli 19, Wrocław 50-421", "Hydropolis to centrum wiedzy na temat wody, w którym w fascynujący sposób pokazane jest jej znaczenie dla człowieka",
+                "Hydropolis to centrum wiedzy na temat wody, w którym w fascynujący sposób pokazane jest jej znaczenie dla człowieka. Wystawa zajmuje cztery tysiące metrów, w dawnych, ponad stuletnich zbiornikach czystej wody"
+                        + "" + "Oryginalna scenografia oraz multimedia (ponad 60 monitorów dotykowych) sprawiają, że w Hydropolis nie można się nudzić, bo angażowane są niemal wszystkie zmysły." + "– Woda była na początku wszelkiego życia, nie tylko na Ziemi." +
+                        " W najdalszych poznanych dotąd zakątkach kosmosu uczeni trafiają na ślady wody. Jej obecność to jeden pretekstów do podejrzeń, że we wszechświecie nie jesteśmy sami, bo woda daje życie – twierdzą autorzy wystawy w Hydropolis", "hydropolis1", "hydropolis2", "hydropolis3" ));
+
+        insertAttraction(new Attraction("Panorama Racławicka", "ul. Purkyniego 11 50-155 Wrocław", "Panorama Racławicka to jedno z niewielu miejsc na świecie, gdzie podziwiać można relikt dziewiętnastowiecznej kultury masowej. Wielkie malowidło (15x114m)",
+                "Panorama Racławicka – muzeum sztuki we Wrocławiu, oddział Muzeum Narodowego we Wrocławiu, założone w 1893 we Lwowie, od 1980 we Wrocławiu; eksponuje cykloramiczny obraz Bitwa pod Racławicami namalowany w latach 1893–1894 przez zespół malarzy pod kierunkiem Jana Styki" +
+                        " i Wojciecha Kossaka. Obraz olejny przedstawia bitwę pod Racławicami (1794), jeden z epizodów insurekcji kościuszkowskiej, zwycięstwo wojsk polskich pod dowództwem gen. Tadeusza Kościuszki nad wojskami rosyjskimi pod dowództwem gen. Aleksandra Tormasowa." +
+                        "Obok Panoramy siedmiogrodzkiej, Golgoty oraz Męczeństwa chrześcijan w cyrku Nerona jest to jedna z czterech XIX–wiecznych panoram, namalowanych pod kierownictwem Jana Styki i Wojciecha Kossaka.", "panorama1", "panorama2", "panorama3" ));
+    }
+
+    public Cursor getAttractionByName(String name) {
+        Cursor cursor = mDatabase.query(AttrConst.TABLE_NAME, null, AttrConst.COLUMN_ATTRACTION_NAME + " = ?", new String[] {name}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 
 

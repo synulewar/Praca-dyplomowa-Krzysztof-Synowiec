@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Przewodnik Turystyczny</string>
     <string name="action_settings">Settings</string>
-    <string name="nazwa"><b>Nazwa</b></string>
+    <string name="nazwa"><b>Nazwa:</b></string>
     <string name="opis">Opis</string>
-    <string name="adres">Adres</string>
+    <string name="adres">Adres:</string>
     <string name="wyszukaj">Wyszukaj...</string>
+    <string name="distance_asc">Sortuj po odległości rosnąco</string>
+    <string name="distance_dsc">Sortuj po odległości malejąco</string>
+    <string name="name_asc">Sortuj po nazwie rosnąco</string>
+    <string name="name_dsc">Sortuj po nazwie malejąco</string>
 </resources>
