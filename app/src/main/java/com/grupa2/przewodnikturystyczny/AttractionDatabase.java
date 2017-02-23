@@ -140,6 +140,11 @@ public class AttractionDatabase {
         insertAttraction(new Attraction("Wrocławski Ratusz", "Rynek, 50-996 Wrocław", "Stary Ratusz we Wrocławiu – późnogotycki budynek na wrocławskim Rynku, jeden z najlepiej zachowanych historycznych ratuszy w Polsce, zarazem jeden z głównych zabytków architektonicznych Wrocławia.",
                 "Stary Ratusz we Wrocławiu – późnogotycki budynek na wrocławskim Rynku, jeden z najlepiej zachowanych historycznych ratuszy w Polsce, zarazem jeden z głównych zabytków architektonicznych Wrocławia.\n" +
                         "\n" + "Ratusz znajduje się w południowo-wschodnim narożu bloku śródrynkowego (tretu). Dwukondygnacyjny, podpiwniczony, trójtraktowy budynek na planie wydłużonego prostokąta z wieżą i kilkoma przybudówkami powstał w kilku etapach budowlanych na przestrzeni około 250 lat (od schyłku XIII w. aż po wiek XVI).", "ratusz1", "ratusz2", "ratusz3"));
+
+        insertAttraction(new Attraction("Ogród Zoologiczny we Wrocławiu", "Wróblewskiego 1-5, 51-618 Wrocław", "Ogród Zoologiczny we Wrocławiu – ogród zoologiczny znajdujący się przy ul. Wróblewskiego 1–5 we Wrocławiu, otwarty 10 lipca 1865. Jest najstarszym na obecnych ziemiach polskich ogrodem zoologicznym w Polsce. Powierzchnia ogrodu to 33 hektary.",
+                "Ogród Zoologiczny we Wrocławiu (Zoo Wrocław) – ogród zoologiczny znajdujący się przy ul. Wróblewskiego 1–5 we Wrocławiu, otwarty 10 lipca 1865. Jest najstarszym na obecnych ziemiach polskich ogrodem zoologicznym w Polsce. Powierzchnia ogrodu to 33 hektary. Oficjalną nazwą ogrodu jest Zoo Wrocław Sp. z o.o.\n" +
+                        "\n" +
+                        "Pod koniec 2015 wrocławskie Zoo prezentowało ponad 10 500 zwierząt (nie wliczając bezkręgowców) z 1132 gatunków. Jest piątym najchętniej odwiedzanym ogrodem zoologicznym w Europie.","zoo1", "zoo2", "zoo3"));
     }
 
 
