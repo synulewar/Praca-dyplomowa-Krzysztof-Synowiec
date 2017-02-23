@@ -10,10 +10,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -125,6 +129,25 @@ public class MainList extends AppCompatActivity {
 
         });
 
+        EditText mFilter = (EditText) findViewById(R.id.szukacz);
+        mFilter.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                dataAdapter.getFilter().filter(s.toString());
+            }
+        });
+
+        dataAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+            public Cursor runQuery(CharSequence constraint) {
+                return mDatabase.getAttractionByNameOrFragment(constraint.toString());
+            }
+        });
+
         // Podpinamy adapter do listy
         ListView listView = (ListView) findViewById(R.id.listaAtrakcji);
         // Assign adapter to ListView
@@ -152,9 +175,6 @@ public class MainList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 }
 
