@@ -286,9 +286,11 @@ public class MainList extends AppCompatActivity {
                     (Context.LOCATION_SERVICE);
 
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Log.d(TAG, "lastKnownLocation:  " + lastKnownLocation.getLatitude() + " " + lastKnownLocation.getLongitude() );
-            mMyLocation.setLatitude(lastKnownLocation.getLatitude());
-            mMyLocation.setLongitude(lastKnownLocation.getLongitude());
+            if (lastKnownLocation != null) {
+                Log.d(TAG, "lastKnownLocation:  " + lastKnownLocation.getLatitude() + " " + lastKnownLocation.getLongitude());
+                mMyLocation.setLatitude(lastKnownLocation.getLatitude());
+                mMyLocation.setLongitude(lastKnownLocation.getLongitude());
+            }
 
             Log.d(TAG, "getLocation: ");
 
