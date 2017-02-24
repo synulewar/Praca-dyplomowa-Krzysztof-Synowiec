@@ -40,7 +40,7 @@ public class MapMarker extends AppCompatActivity implements OnMapReadyCallback {
         Intent intent = getIntent();
         double myLongitude = intent.getDoubleExtra(MainList.LONGITUDE,MainList.DEFAUL_LONGITUDE);
         double myLatitude = intent.getDoubleExtra(MainList.LATITUDE, MainList.DEFAULT_LATITUDE);
-        LatLng myLatLng = new LatLng(myLongitude,myLatitude);
+        LatLng myLatLng = new LatLng(myLatitude,myLongitude);
         googleMap.addMarker(new MarkerOptions().position(myLatLng).title("Twoja lokalizacja"));
         builder.include(myLatLng);
         if(cursor!=null) {
@@ -49,7 +49,7 @@ public class MapMarker extends AppCompatActivity implements OnMapReadyCallback {
                     String nazwa = cursor.getString(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_ATTRACTION_NAME));
                     double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_LONGITUDE));
                     double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_LATITUDE));
-                    LatLng latLng = new LatLng(longitude,latitude);
+                    LatLng latLng = new LatLng(latitude,longitude);
                     googleMap.addMarker(new MarkerOptions().position(latLng).title(nazwa));
                     builder.include(latLng);
                 }
