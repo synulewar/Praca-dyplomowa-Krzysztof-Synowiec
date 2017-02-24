@@ -159,6 +159,10 @@ public class AttractionDatabase {
                 "Ogród Zoologiczny we Wrocławiu (Zoo Wrocław) – ogród zoologiczny znajdujący się przy ul. Wróblewskiego 1–5 we Wrocławiu, otwarty 10 lipca 1865. Jest najstarszym na obecnych ziemiach polskich ogrodem zoologicznym w Polsce. Powierzchnia ogrodu to 33 hektary. Oficjalną nazwą ogrodu jest Zoo Wrocław Sp. z o.o.\n" +
                         "\n" +
                         "Pod koniec 2015 wrocławskie Zoo prezentowało ponad 10 500 zwierząt (nie wliczając bezkręgowców) z 1132 gatunków. Jest piątym najchętniej odwiedzanym ogrodem zoologicznym w Europie.","zoo1", "zoo2", "zoo3", 51.1056374, 17.076222099999995, 0));
+
+        insertAttraction(new Attraction("Ostrów Tumski", "plac Katedralny 18, Wrocław", "Ostrów Tumski – najstarsza, zabytkowa część Wrocławia, która powstała na ówczesnej wyspie na obszarze przepraw na Odrze w okolicy ujścia rzeki Oławy. Rzeka rozgałęziając się na liczne odnogi utworzyła tu wyspy.",
+                "Wykopaliska archeologiczne pozwoliły ustalić, że najwcześniej zamieszkany był w okolicy od kościoła św. Marcina do kościoła św. Krzyża. Pierwszy drewniany kościół św. Marcina w XI w. pełnić miał rolę książęcej kaplicy. Otaczał ją system warownych umocnień. W sposób naturalny broniła go Odra, która jednocześnie stanowiła drogę komunikacyjną i dostarczała jego mieszkańcom pożywienia. Ostrów Tumski liczył w tym czasie ok. 1500 mieszkańców.",
+                "ostrow1", "ostrow2", "ostrow3", 51.1144633, 17.04673439999999, 0));
     }
 
 
