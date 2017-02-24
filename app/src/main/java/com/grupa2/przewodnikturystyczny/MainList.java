@@ -37,14 +37,21 @@ public class MainList extends AppCompatActivity {
         mContext = getApplicationContext();
         mActivity = this;
 
+        FloatingActionButton mapa = (FloatingActionButton) findViewById(R.id.map);
+        mapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mActivity, MapMarker.class);
+                startActivity(intent);
+            }
+        });
+
         mDatabase = new AttractionDatabase(mContext);
         mDatabase.open();
 
         //nie mamy zewnetrznego serwera wiec w ten sposob realizujemy fikcyjne uzupelnianie bazy
         mDatabase.deleteAllAttractions();
         mDatabase.addAttractions();
-
-
 
         displayListView();
     }
