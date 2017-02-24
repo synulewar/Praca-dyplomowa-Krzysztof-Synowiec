@@ -124,6 +124,11 @@ public class AttractionDatabase {
         return mCursor;
     }
 
+    public Cursor fetchAllLocations() {
+        Cursor mCursor = mDatabase.query(AttrConst.TABLE_NAME, new String[] {AttrConst._ID, AttrConst.COLUMN_LONGITUDE, AttrConst.COLUMN_LATITUDE}, null, null, null, null, orderBy, null);
+        return mCursor;
+    }
+
     public void addAttractions() {
         insertAttraction(new Attraction("Hydropolis", "ul. Na Grobli 19, Wrocław 50-421", "Hydropolis to centrum wiedzy na temat wody, w którym w fascynujący sposób pokazane jest jej znaczenie dla człowieka",
                 "Hydropolis to centrum wiedzy na temat wody, w którym w fascynujący sposób pokazane jest jej znaczenie dla człowieka. Wystawa zajmuje cztery tysiące metrów, w dawnych, ponad stuletnich zbiornikach czystej wody"
@@ -189,5 +194,16 @@ public class AttractionDatabase {
             cursor.moveToFirst();
         }
         return cursor;
+    }
+
+    public void insertDistance(int id, double distance) {
+        ContentValues distanceUpdate = new ContentValues();
+        distanceUpdate.put(AttrConst.COLUMN_DISTANCE, distance);
+        mDatabase.update(AttrConst.TABLE_NAME, distanceUpdate, AttrConst._ID + "=" + id, null);
+    }
+
+    public boolean isDatabaseEmpty() {
+        Cursor cursor = mDatabase.query(AttrConst.TABLE_NAME, new String[] {AttrConst._ID}, null, null, null, null, orderBy, null);
+        return !cursor.moveToFirst();
     }
 }

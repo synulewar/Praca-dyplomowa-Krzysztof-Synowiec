@@ -1,16 +1,27 @@
 package com.grupa2.przewodnikturystyczny;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,13 +30,28 @@ import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainList extends AppCompatActivity {
 
+    private static final String TAG = "kkk";
     Activity mActivity;
     Context mContext;
+    LocationManager mLocationManager;
+    Location mMyLocation = new Location("");
     AttractionDatabase mDatabase;
     private SimpleCursorAdapter dataAdapter;
+    public static final String LONGITUDE = "longitude";
+    public static final String LATITUDE = "latitude";
+    public static final double DEFAUL_LONGITUDE = 51.1082569;
+    public static final double DEFAULT_LATITUDE = 17.060520699999984;
+    private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
+    private static final long INTERVAL_TIME = 1800000;
+    private static final float MINIMAL_DISTANCE = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,28 +62,60 @@ public class MainList extends AppCompatActivity {
         mContext = getApplicationContext();
         mActivity = this;
 
+
+        mMyLocation.setLongitude(DEFAUL_LONGITUDE);
+        mMyLocation.setLatitude(DEFAULT_LATITUDE);
+//        String locationProvider = LocationManager.GPS_PROVIDER;
+//        mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
+//        Location lastKnownLocation = mLocationManager .getLastKnownLocation(locationProvider);
+
         FloatingActionButton mapa = (FloatingActionButton) findViewById(R.id.map);
         mapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mActivity, MapMarker.class);
+                intent.putExtra(LONGITUDE, mMyLocation.getLongitude());
+                intent.putExtra(LATITUDE, mMyLocation.getLatitude());
                 startActivity(intent);
             }
         });
 
         mDatabase = new AttractionDatabase(mContext);
         mDatabase.open();
-
         //nie mamy zewnetrznego serwera wiec w ten sposob realizujemy fikcyjne uzupelnianie bazy
-        mDatabase.deleteAllAttractions();
-        mDatabase.addAttractions();
 
+        if (mDatabase.isDatabaseEmpty()) {
+            mDatabase.addAttractions();
+        }
+        calculateDistanceFromAttracions();
         displayListView();
+    }
+
+    private void calculateDistanceFromAttracions() {
+
+        double result;
+        Cursor cursor = mDatabase.fetchAllLocations();
+        if(cursor!=null) {
+            try {
+                while (cursor.moveToNext()) {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst._ID));
+                    double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_LONGITUDE));
+                    double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_LATITUDE));
+                    Location location = new Location("");
+                    location.setLatitude(latitude);
+                    location.setLongitude(longitude);
+                    result =(double) mMyLocation.distanceTo(location)/1000;
+                    mDatabase.insertDistance(id, result);
+                    Log.d(TAG, "calculateDistanceFromAttracions: " + result);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_list, menu);
         return true;
     }
@@ -69,23 +127,23 @@ public class MainList extends AppCompatActivity {
         switch (item.getItemId()) {
             //Nie mamy jeszcze obliczania dystansu wiec poki co sortujemy po adresie
             case R.id.order_distance_asc:
-                mDatabase.setOrderBy(AttractionDatabase.AttrConst.COLUMN_ADRES + " ASC");
+                mDatabase.setOrderBy(AttractionDatabase.AttrConst.COLUMN_DISTANCE + " ASC");
                 displayListView();
                 return true;
 
             case R.id.order_distance_desc:
 
-                mDatabase.setOrderBy(AttractionDatabase.AttrConst.COLUMN_ADRES + " DESC");
+                mDatabase.setOrderBy(AttractionDatabase.AttrConst.COLUMN_DISTANCE + " DESC");
                 displayListView();
                 return true;
 
-            case  R.id.order_name_asc:
+            case R.id.order_name_asc:
 
                 mDatabase.setOrderBy(AttractionDatabase.AttrConst.COLUMN_ATTRACTION_NAME + " ASC");
                 displayListView();
                 return true;
 
-            case  R.id.order_name_desc:
+            case R.id.order_name_desc:
 
                 mDatabase.setOrderBy(AttractionDatabase.AttrConst.COLUMN_ATTRACTION_NAME + " DESC");
                 displayListView();
@@ -104,14 +162,16 @@ public class MainList extends AppCompatActivity {
                 AttractionDatabase.AttrConst.COLUMN_ATTRACTION_NAME,
                 AttractionDatabase.AttrConst.COLUMN_ADRES,
                 AttractionDatabase.AttrConst.COLUMN_SHORT_DESCRIPTION,
-                AttractionDatabase.AttrConst.COLUMN_PHOTO_1
+                AttractionDatabase.AttrConst.COLUMN_PHOTO_1,
+                AttractionDatabase.AttrConst.COLUMN_DISTANCE
         };
 
         int[] to = new int[]{
                 R.id.nazwa,
                 R.id.place,
                 R.id.opis,
-                R.id.main_photo
+                R.id.main_photo,
+                R.id.dystans
         };
 
 
@@ -127,6 +187,12 @@ public class MainList extends AppCompatActivity {
                     ImageView mainPhoto = (ImageView) view;
                     int resId = mContext.getResources().getIdentifier(cursor.getString(columnIndex), "drawable", mContext.getPackageName());
                     mainPhoto.setImageResource(resId);
+                    return true;
+                } else if(view.getId() == R.id.dystans) {
+                    TextView dystans = (TextView) view;
+                    double dyst = cursor.getDouble(columnIndex);
+                    String tekst = String.format("%.2f", dyst) + " km";
+                    dystans.setText(tekst);
                     return true;
                 }
                 return false;
@@ -184,5 +250,67 @@ public class MainList extends AppCompatActivity {
             }
         });
     }
+
+
+//    private void getLocation() {
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            if (ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                getPermission();
+//            } else {
+//                startLocationListener();
+//            }
+//        } else {
+//            startLocationListener();
+//        }
+//    }
+//
+//
+//    private void getPermission() {
+//        if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                    MY_PERMISSIONS_ACCESS_FINE_LOCATION);
+//        }
+//    }
+//
+//    public void startLocationListener() {
+//        LocationManager locationManager = (LocationManager) mActivity.getSystemService
+//                (Context.LOCATION_SERVICE);
+//        Log.d(TAG, "getLocation: ");
+//
+//
+//        LocationListener locationListener = new LocationListener() {
+//            public void onLocationChanged(Location location) {
+//                Log.d(TAG, "onLocationChanged:  ");
+//
+//            }
+//
+//            public void onStatusChanged(String provider, int status, Bundle extras) {
+//                Log.d(TAG, "onStatusChanged: ");
+//            }
+//
+//            public void onProviderEnabled(String provider) {
+//                Log.d(TAG, "onProviderEnabled: ");
+//            }
+//
+//            public void onProviderDisabled(String provider) {
+//            }
+//        };
+//
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, INTERVAL_TIME, MINIMAL_DISTANCE, locationListener);
+//    }
+//    }
+//
+
 }
 

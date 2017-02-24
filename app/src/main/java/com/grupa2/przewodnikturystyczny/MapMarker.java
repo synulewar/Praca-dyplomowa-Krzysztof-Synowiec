@@ -1,5 +1,6 @@
 package com.grupa2.przewodnikturystyczny;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 public class MapMarker extends AppCompatActivity implements OnMapReadyCallback {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,12 @@ public class MapMarker extends AppCompatActivity implements OnMapReadyCallback {
         Cursor cursor = database.fetchAllPlaces();
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        Intent intent = getIntent();
+        double myLongitude = intent.getDoubleExtra(MainList.LONGITUDE,MainList.DEFAUL_LONGITUDE);
+        double myLatitude = intent.getDoubleExtra(MainList.LATITUDE, MainList.DEFAULT_LATITUDE);
+        LatLng myLatLng = new LatLng(myLongitude,myLatitude);
+        googleMap.addMarker(new MarkerOptions().position(myLatLng).title("Twoja lokalizacja"));
+        builder.include(myLatLng);
         if(cursor!=null) {
             try {
                 while (cursor.moveToNext()) {
