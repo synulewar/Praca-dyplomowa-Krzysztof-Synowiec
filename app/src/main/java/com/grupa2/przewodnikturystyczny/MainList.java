@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -155,19 +154,17 @@ public class MainList extends AppCompatActivity {
             }
         });
 
-        // Podpinamy adapter do listy
+
         ListView listView = (ListView) findViewById(R.id.listaAtrakcji);
-        // Assign adapter to ListView
+
         listView.setAdapter(dataAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> listView, View view,
                                     int position, long id) {
-                // Pobierz dane z wybranej pozycji
-                Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
-                // Pobieramy numer telefonu z bazy dla wybranego klienta i wyświetlamy w Toast
+                Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
                 String nazwa = cursor.getString(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_ATTRACTION_NAME));
                 String adres = cursor.getString(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_ADRES));
@@ -175,7 +172,11 @@ public class MainList extends AppCompatActivity {
                 String photo1 = cursor.getString(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_PHOTO_1));
                 String photo2 = cursor.getString(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_PHOTO_2));
                 String photo3 = cursor.getString(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_PHOTO_3));
-                Attraction attraction = new Attraction(nazwa, adres, null, opis, photo1, photo2, photo3);
+                double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_LONGITUDE));
+                double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_LATITUDE));
+                double distance = cursor.getDouble(cursor.getColumnIndexOrThrow(AttractionDatabase.AttrConst.COLUMN_DISTANCE));
+
+                Attraction attraction = new Attraction(nazwa, adres, null, opis, photo1, photo2, photo3, longitude, latitude, distance);
 
                 Intent intent = new Intent(mActivity, DetailView.class);
                 intent.putExtra(AttractionDatabase.AttrConst.KEY, attraction);

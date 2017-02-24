@@ -14,8 +14,11 @@ public class Attraction implements Parcelable {
     private String mPhoto1;
     private String mPhoto2;
     private String mPhoto3;
+    private double mLongitude;
+    private double mLatitude;
+    private double mDistance;
 
-    public Attraction(String name, String adress, String shortDesctription, String fullDescription,  String photo1, String photo2, String photo3) {
+    public Attraction(String name, String adress, String shortDesctription, String fullDescription,  String photo1, String photo2, String photo3, double longitude, double latitude, double distance) {
         this.mName = name;
         this.mAdress = adress;
         this.mShortDesctription = shortDesctription;
@@ -23,6 +26,9 @@ public class Attraction implements Parcelable {
         this.mPhoto1 = photo1;
         this.mPhoto2 = photo2;
         this.mPhoto3 = photo3;
+        this.mLongitude = longitude;
+        this.mLatitude = latitude;
+        this.mDistance = distance;
     }
 
     public String getAdress() {
@@ -81,6 +87,30 @@ public class Attraction implements Parcelable {
         this.mShortDesctription = mShortDesctription;
     }
 
+    public double getLatitude() {
+        return mLatitude;
+    }
+
+    public double getLongitude() {
+        return mLongitude;
+    }
+
+    public void setLatitude(double mLatitude) {
+        this.mLatitude = mLatitude;
+    }
+
+    public void setLongitude(double mLongitude) {
+        this.mLongitude = mLongitude;
+    }
+
+    public double getDistance() {
+        return this.mDistance;
+    }
+
+    public void setDistance(double distance) {
+        this.mDistance = distance;
+    }
+
     protected Attraction(Parcel in) {
         mName = in.readString();
         mAdress = in.readString();
@@ -89,6 +119,9 @@ public class Attraction implements Parcelable {
         mPhoto1 = in.readString();
         mPhoto2 = in.readString();
         mPhoto3 = in.readString();
+        mLatitude = in.readDouble();
+        mLongitude = in.readDouble();
+        mDistance = in.readDouble();
     }
 
     @Override
@@ -105,6 +138,9 @@ public class Attraction implements Parcelable {
         dest.writeString(mPhoto1);
         dest.writeString(mPhoto2);
         dest.writeString(mPhoto3);
+        dest.writeDouble(mLongitude);
+        dest.writeDouble(mLatitude);
+        dest.writeDouble(mDistance);
     }
 
     @SuppressWarnings("unused")
