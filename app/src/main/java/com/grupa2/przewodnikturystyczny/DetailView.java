@@ -3,8 +3,11 @@ package com.grupa2.przewodnikturystyczny;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,8 +21,12 @@ public class DetailView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Context context = getApplicationContext();
-        setContentView(R.layout.activity_detail_view);
+        setContentView(R.layout.detail);
         Bundle data = getIntent().getExtras();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         mAttraction = data.getParcelable(AttractionDatabase.AttrConst.KEY);
 
         TextView nazwa = (TextView) findViewById(R.id.nazwa);
@@ -47,6 +54,17 @@ public class DetailView extends AppCompatActivity {
                 findMe(mAttraction.getAdress());
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void findMe(String adres) {
