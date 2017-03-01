@@ -21,7 +21,7 @@ import android.widget.TextView;
 public class DetailView extends AppCompatActivity {
 
     Attraction mAttraction;
-    int[] mResources =new int[3] ;
+    int[] mResources = new int[3] ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

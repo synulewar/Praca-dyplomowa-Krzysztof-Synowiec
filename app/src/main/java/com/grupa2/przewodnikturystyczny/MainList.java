@@ -1,13 +1,11 @@
 package com.grupa2.przewodnikturystyczny;
 
-import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -33,12 +31,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
+import de.greenrobot.event.EventBus;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainList extends AppCompatActivity {
 
     private static final String TAG = "kkk";
+    private static final String ATTRACTION_URL = "https://drive.google.com/uc?export=download&id=0B6RSK6h2F7l8TkdFN3paNEpuQmM";
     Activity mActivity;
     Context mContext;
     LocationManager mLocationManager;
@@ -62,21 +69,10 @@ public class MainList extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mContext = getApplicationContext();
         mActivity = this;
-
+        EventBus.getDefault().register(this);
 
         mMyLocation.setLatitude(DEFAULT_LATITUDE);
         mMyLocation.setLongitude(DEFAUL_LONGITUDE);
-        getLocation();
-
-        mDatabase = new AttractionDatabase(mContext);
-        mDatabase.open();
-        //nie mamy zewnetrznego serwera wiec w ten sposob realizujemy fikcyjne uzupelnianie bazy
-
-        if (mDatabase.isDatabaseEmpty()) {
-            mDatabase.addAttractions();
-        }
-        calculateDistanceFromAttracions();
-        displayListView();
 
         FloatingActionButton mapa = (FloatingActionButton) findViewById(R.id.map);
         mapa.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +84,20 @@ public class MainList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        mDatabase = new AttractionDatabase(mContext);
+        mDatabase.open();
+        mDatabase.deleteAllAttractions();
+//        if (mDatabase.isDatabaseEmpty()) {
+//            mDatabase.addAttractions();
+//        }
+        useOkHttp();
+    }
+
+    private void getViewReady() {
+        getLocation();
+        calculateDistanceFromAttracions();
+        displayListView();
 
         EditText mFilter = (EditText) findViewById(R.id.szukacz);
         mFilter.addTextChangedListener(new TextWatcher() {
@@ -107,6 +117,16 @@ public class MainList extends AppCompatActivity {
                 return mDatabase.getAttractionByNameOrFragment(constraint.toString());
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     private void calculateDistanceFromAttracions() {
@@ -317,6 +337,39 @@ public class MainList extends AppCompatActivity {
 
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, INTERVAL_TIME, MINIMAL_DISTANCE, locationListener);
         }
+    }
+
+    @SuppressWarnings("unused")
+    public void onEventMainThread(AttractionLoadedEvent event) {
+        Attraction[] attracions = event.getAttractions();
+        for (Attraction attraction:attracions) {
+            mDatabase.insertAttraction(attraction);
+        }
+        EventBus.getDefault().unregister(this);
+        getViewReady();
+    }
+
+    private void useOkHttp() {
+        OkHttpClient client = new OkHttpClient();
+        final Request request = new Request.Builder().url(ATTRACTION_URL).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: fail !");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    String json = response.body().string();
+                    Log.d(TAG, "onResponse: " + json);
+                    Attraction[] attractions = new Gson().fromJson(json, Attraction[].class);
+                    EventBus.getDefault().post(new AttractionLoadedEvent(attractions));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
 

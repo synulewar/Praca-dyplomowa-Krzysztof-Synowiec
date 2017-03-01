@@ -7,16 +7,16 @@ import android.os.Parcelable;
  * Created by KPC on 2017-02-02.
  */
 public class Attraction implements Parcelable {
-    private String mName;
-    private String mAdress;
-    private String mShortDesctription;
-    private String mFullDescription;
-    private String mPhoto1;
-    private String mPhoto2;
-    private String mPhoto3;
-    private double mLongitude;
-    private double mLatitude;
-    private double mDistance;
+    String mName;
+    String mAdress;
+    String mShortDesctription;
+    String mFullDescription;
+    String mPhoto1;
+    String mPhoto2;
+    String mPhoto3;
+    double mLongitude;
+    double mLatitude;
+    double mDistance;
 
     public Attraction(String name, String adress, String shortDesctription, String fullDescription,  String photo1, String photo2, String photo3, double longitude, double latitude, double distance) {
         this.mName = name;
