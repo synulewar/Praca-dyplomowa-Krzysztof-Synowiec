@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,6 +13,14 @@
     tools:context="com.grupa2.przewodnikturystyczny.MainList"
     tools:showIn="@layout/activity_main_list">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
+
     <EditText
         android:id="@+id/szukacz"
         android:layout_width="match_parent"
@@ -22,7 +30,8 @@
 
     <ListView
         android:id="@+id/listaAtrakcji"
+        android:layout_below="@id/szukacz"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,9 @@ public class MainList extends AppCompatActivity {
     private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
     private static final long INTERVAL_TIME = 1800000;
     private static final float MINIMAL_DISTANCE = 0;
+    private ListView mListView;
+    private EditText mFilter;
+    private ProgressBar mProgressBar;
 
 
     @Override
@@ -73,6 +77,13 @@ public class MainList extends AppCompatActivity {
 
         mMyLocation.setLatitude(DEFAULT_LATITUDE);
         mMyLocation.setLongitude(DEFAUL_LONGITUDE);
+
+        mListView = (ListView) findViewById(R.id.listaAtrakcji);
+        mFilter = (EditText) findViewById(R.id.szukacz);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress);
+        mListView.setVisibility(View.INVISIBLE);
+        mFilter.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
 
         FloatingActionButton mapa = (FloatingActionButton) findViewById(R.id.map);
         mapa.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +110,6 @@ public class MainList extends AppCompatActivity {
         calculateDistanceFromAttracions();
         displayListView();
 
-        EditText mFilter = (EditText) findViewById(R.id.szukacz);
         mFilter.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
             }
@@ -232,11 +242,13 @@ public class MainList extends AppCompatActivity {
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.listaAtrakcji);
+        mListView.setAdapter(dataAdapter);
 
-        listView.setAdapter(dataAdapter);
+        mListView.setVisibility(View.VISIBLE);
+        mFilter.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> listView, View view,
                                     int position, long id) {
