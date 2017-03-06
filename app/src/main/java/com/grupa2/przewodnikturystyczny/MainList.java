@@ -109,24 +109,6 @@ public class MainList extends AppCompatActivity {
         getLocation();
         calculateDistanceFromAttracions();
         displayListView();
-
-        mFilter.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                dataAdapter.getFilter().filter(s.toString());
-            }
-        });
-
-        dataAdapter.setFilterQueryProvider(new FilterQueryProvider() {
-            public Cursor runQuery(CharSequence constraint) {
-                return mDatabase.getAttractionByNameOrFragment(constraint.toString());
-            }
-        });
     }
 
     @Override
@@ -270,6 +252,24 @@ public class MainList extends AppCompatActivity {
                 Intent intent = new Intent(mActivity, DetailView.class);
                 intent.putExtra(AttractionDatabase.AttrConst.KEY, attraction);
                 startActivity(intent);
+            }
+        });
+
+        mFilter.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                dataAdapter.getFilter().filter(s.toString());
+            }
+        });
+
+        dataAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+            public Cursor runQuery(CharSequence constraint) {
+                return mDatabase.getAttractionByNameOrFragment(constraint.toString());
             }
         });
     }
