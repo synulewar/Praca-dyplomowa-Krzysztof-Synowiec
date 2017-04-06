@@ -58,8 +58,8 @@ public class MainList extends AppCompatActivity {
     public static final double DEFAUL_LONGITUDE = 17.060520699999984;
     public static final double DEFAULT_LATITUDE = 51.1082569;
     private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
-    private static final long INTERVAL_TIME = 1800000;
-    private static final float MINIMAL_DISTANCE = 0;
+    private static final long INTERVAL_TIME = 1800;
+    private static final float MINIMAL_DISTANCE = 1000;
     private ListView mListView;
     private EditText mFilter;
     private ProgressBar mProgressBar;
@@ -347,7 +347,7 @@ public class MainList extends AppCompatActivity {
                 }
             };
 
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, INTERVAL_TIME, MINIMAL_DISTANCE, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, INTERVAL_TIME, MINIMAL_DISTANCE, locationListener);
         }
     }
 

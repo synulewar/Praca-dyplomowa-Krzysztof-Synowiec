@@ -51,10 +51,12 @@
             android:id="@+id/adres" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            app:srcCompat="@drawable/ic_place_black_24dp"
+            android:background="#00000000"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/local"
             android:id="@+id/localizeButton"
             android:layout_gravity="center"/>
 
