@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -61,8 +63,8 @@ public class MainList extends AppCompatActivity {
     public static final double DEFAUL_LONGITUDE = 17.060520699999984;
     public static final double DEFAULT_LATITUDE = 51.1082569;
     private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
-    private static final long INTERVAL_TIME = 1800;
-    private static final float MINIMAL_DISTANCE = 1000;
+    private static final long INTERVAL_TIME = 50;
+    private static final float MINIMAL_DISTANCE = 50;
     private ListView mListView;
     private EditText mFilter;
     private ProgressBar mProgressBar;
@@ -238,8 +240,9 @@ public class MainList extends AppCompatActivity {
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 if (view.getId() == R.id.main_photo) {
                     ImageView mainPhoto = (ImageView) view;
-                    int resId = mContext.getResources().getIdentifier(cursor.getString(columnIndex), "drawable", mContext.getPackageName());
-                    mainPhoto.setImageResource(resId);
+                    mainPhoto.setBackgroundColor(Color.WHITE);
+                    Picasso.with(mContext).load(cursor.getString(columnIndex)).placeholder
+                            (R.drawable.animation_progress).error(R.drawable.nophoto).into(mainPhoto);
                     return true;
                 } else if(view.getId() == R.id.dystans) {
                     TextView dystans = (TextView) view;

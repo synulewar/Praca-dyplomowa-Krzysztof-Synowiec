@@ -2,6 +2,7 @@ package com.grupa2.przewodnikturystyczny;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
@@ -18,10 +19,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class DetailView extends AppCompatActivity {
 
     Attraction mAttraction;
-    int[] mResources = new int[3] ;
+    String[] mResources = new String[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +42,9 @@ public class DetailView extends AppCompatActivity {
         TextView adres = (TextView) findViewById(R.id.adres);
         TextView opis = (TextView) findViewById(R.id.szczegolowy_opis);
 
-        int idPhoto1 = context.getResources().getIdentifier(mAttraction.getPhoto1(), "drawable", context.getPackageName());
-        int idPhoto2 = context.getResources().getIdentifier(mAttraction.getPhoto2(), "drawable", context.getPackageName());
-        int idPhoto3 = context.getResources().getIdentifier(mAttraction.getPhoto3(), "drawable", context.getPackageName());
+        String idPhoto1 = mAttraction.getPhoto1();
+        String idPhoto2 = mAttraction.getPhoto2();
+        String idPhoto3 = mAttraction.getPhoto3();
 
         mResources[0] = idPhoto1;
         mResources[1] = idPhoto2;
@@ -108,8 +111,10 @@ public class DetailView extends AppCompatActivity {
             View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-            imageView.setImageResource(mResources[position]);
+            imageView.setBackgroundColor(Color.WHITE);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Picasso.with(mContext).load(mResources[position]).placeholder(R.drawable.animation_progress).error(R.drawable.nophoto).into(imageView);
+
 
             container.addView(itemView);
 
