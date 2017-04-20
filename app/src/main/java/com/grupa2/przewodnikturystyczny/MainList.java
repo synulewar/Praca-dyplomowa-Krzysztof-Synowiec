@@ -9,9 +9,11 @@ import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -24,6 +26,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
@@ -68,13 +71,36 @@ public class MainList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getApplicationContext();
+        mActivity = this;
+        if(isNetworkAvailable()) {
+            setStandardView();
+        } else {
+            setNoInternetView();
+        }
+    }
+
+    private void setNoInternetView() {
+        setContentView(R.layout.internet_missing);
+        Snackbar.make(getWindow().getDecorView().getRootView(), mContext.getString(R.string.internet_connectio_error), Snackbar.LENGTH_LONG).show();
+        Button refers = (Button) findViewById(R.id.refresh_button);
+        refers.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(mContext, MainList.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP  );
+                startActivity(mainIntent);
+                mActivity.finish();
+            }
+        });
+    }
+
+    private void setStandardView() {
         setContentView(R.layout.activity_main_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mContext = getApplicationContext();
-        mActivity = this;
-        EventBus.getDefault().register(this);
 
+        EventBus.getDefault().register(this);
         mMyLocation.setLatitude(DEFAULT_LATITUDE);
         mMyLocation.setLongitude(DEFAUL_LONGITUDE);
 
@@ -95,14 +121,16 @@ public class MainList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         mDatabase = new AttractionDatabase(mContext);
         mDatabase.open();
         mDatabase.deleteAllAttractions();
-//        if (mDatabase.isDatabaseEmpty()) {
-//            mDatabase.addAttractions();
-//        }
         useOkHttp();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService
+                (Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo()!=null;
     }
 
     private void getViewReady() {
