@@ -63,7 +63,7 @@ public class MainList extends AppCompatActivity {
     public static final double DEFAUL_LONGITUDE = 17.060520699999984;
     public static final double DEFAULT_LATITUDE = 51.1082569;
     private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
-    private static final long INTERVAL_TIME = 50;
+    private static final long INTERVAL_TIME = 15;
     private static final float MINIMAL_DISTANCE = 50;
     private ListView mListView;
     private EditText mFilter;
@@ -348,7 +348,7 @@ public class MainList extends AppCompatActivity {
             LocationManager locationManager = (LocationManager) mActivity.getSystemService
                     (Context.LOCATION_SERVICE);
 
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastKnownLocation != null) {
                 Log.d(TAG, "lastKnownLocation:  " + lastKnownLocation.getLatitude() + " " + lastKnownLocation.getLongitude());
                 mMyLocation.setLatitude(lastKnownLocation.getLatitude());
@@ -363,7 +363,8 @@ public class MainList extends AppCompatActivity {
                     mMyLocation.setLatitude(location.getLatitude());
                     mMyLocation.setLongitude(location.getLongitude());
                     calculateDistanceFromAttracions();
-                    dataAdapter.notifyDataSetChanged();
+                    Cursor cursor = mDatabase.fetchAllAttractions();
+                    dataAdapter.changeCursor(cursor);
                 }
 
                 public void onStatusChanged(String provider, int status, Bundle extras) {

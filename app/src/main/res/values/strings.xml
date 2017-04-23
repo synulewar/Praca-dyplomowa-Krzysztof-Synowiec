@@ -10,5 +10,5 @@
     <string name="name_asc">Sortuj po nazwie rosnąco</string>
     <string name="name_dsc">Sortuj po nazwie malejąco</string>
     <string name="dystans">Dystans:</string>
-    <string name="internet_connectio_error">Aplikacja wymaga dostepu do internetu. Sprawdź połązenie sieciowe i kliknij aby odświeżyć.</string>
+    <string name="internet_connectio_error">Aplikacja wymaga dostepu do internetu. Sprawdź połączenie sieciowe i kliknij aby odświeżyć.</string>
 </resources>
